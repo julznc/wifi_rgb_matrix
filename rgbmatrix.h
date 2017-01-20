@@ -9,7 +9,7 @@
 #include <NeoPixelBus.h>
 
 // on esp8266 pin GPIO2
-class RGBMatrix : public Adafruit_GFX, public NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod>
+class RGBMatrix : public Adafruit_GFX, public NeoPixelBrightnessBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod>
 {
 public:
   RGBMatrix(uint8_t w, uint8_t h);

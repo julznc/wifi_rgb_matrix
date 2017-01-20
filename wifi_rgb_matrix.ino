@@ -15,15 +15,16 @@ void setup() {
   Serial.println("\nInitializing...");
 
   matrix.Begin();
+  matrix.SetBrightness(8); // 0-255
   matrix.setTextWrap(false);
-  matrix.setTextColor(0x03);
+  matrix.setTextColor(0xFFFF);
   matrix.Show();
 
   Serial.println("\nRunning...");
 
 }
 
-int x    = 18;//matrix.width();
+int x = 18;//matrix.width();
 
 void loop() {
   matrix.fillScreen(0);
@@ -33,6 +34,6 @@ void loop() {
     x = matrix.width();
   }
   matrix.Show();
-  delay(100);
+  delay(300);
 
 }

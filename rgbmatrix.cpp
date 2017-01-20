@@ -1,7 +1,7 @@
 #include "rgbmatrix.h"
 
 RGBMatrix::RGBMatrix(uint8_t w, uint8_t h)
-  : Adafruit_GFX(w, h), NeoPixelBus((uint16_t)(w*h)), _topo(w,h)
+  : Adafruit_GFX(w, h), NeoPixelBrightnessBus((uint16_t)(w*h)), _topo(w,h)
 {
   
 }
