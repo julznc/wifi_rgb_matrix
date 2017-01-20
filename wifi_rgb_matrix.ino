@@ -1,9 +1,8 @@
 /*
  * WS2812 RGB panel controlled by ESP8266 module
  */
-#include <NeoPixelAnimator.h>
-#include <NeoPixelBrightnessBus.h>
-#include <NeoPixelBus.h>
+ 
+#include "rgbmatrix.h"
 
 // 8x36 matrix
 const uint8_t PanelWidth = 36;
