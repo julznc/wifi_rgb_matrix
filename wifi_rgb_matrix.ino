@@ -13,15 +13,26 @@ void setup() {
   Serial.begin(115200);
   while (!Serial); // wait for serial attach
   Serial.println("\nInitializing...");
-  
+
   matrix.Begin();
+  matrix.setTextWrap(false);
+  matrix.setTextColor(0x03);
   matrix.Show();
 
   Serial.println("\nRunning...");
 
 }
 
+int x    = 18;//matrix.width();
+
 void loop() {
-  // put your main code here, to run repeatedly:
+  matrix.fillScreen(0);
+  matrix.setCursor(x, 0);
+  matrix.print(F("Julius love Mary Ann"));
+  if(--x < -96) {
+    x = matrix.width();
+  }
+  matrix.Show();
+  delay(100);
 
 }

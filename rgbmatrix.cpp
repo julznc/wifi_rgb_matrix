@@ -8,6 +8,13 @@ RGBMatrix::RGBMatrix(uint8_t w, uint8_t h)
 
 void RGBMatrix::drawPixel(int16_t x, int16_t y, uint16_t color)
 {
-  SetPixelColor(_topo.Map(x,y), color);
+  RgbColor rgb((color&0xF800)>>8, (color&0x07E0)>>4, (color&0x001F)<<3);
+  SetPixelColor(_topo.Map(x,y), rgb);
+}
+
+void RGBMatrix::fillScreen(uint16_t color)
+{
+  RgbColor rgb((color&0xF800)>>8, (color&0x07E0)>>4, (color&0x001F)<<3);
+  ClearTo(rgb);
 }
 

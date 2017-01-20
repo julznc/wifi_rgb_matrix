@@ -14,6 +14,7 @@ class RGBMatrix : public Adafruit_GFX, public NeoPixelBus<NeoGrbFeature, NeoEsp8
 public:
   RGBMatrix(uint8_t w, uint8_t h);
   virtual void drawPixel(int16_t x, int16_t y, uint16_t color);
+  virtual void fillScreen(uint16_t color);
 
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;
