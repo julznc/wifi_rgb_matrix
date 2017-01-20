@@ -8,10 +8,13 @@
 #include <NeoPixelBrightnessBus.h>
 #include <NeoPixelBus.h>
 
-
-class RGBMatrix
+// on esp8266 pin GPIO2
+class RGBMatrix : public NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod>
 {
-  
+public:
+  RGBMatrix(uint8_t w, uint8_t h);
+private:
+  NeoTopology<RowMajorAlternatingLayout> _topo;
 };
 
 #endif
