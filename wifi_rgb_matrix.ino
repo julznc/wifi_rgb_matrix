@@ -21,6 +21,8 @@ void setup() {
   matrix.setTextColor(0xFFFF);
   matrix.Show();
 
+  web::begin();
+
   Serial.println("\nRunning...");
 
 }
