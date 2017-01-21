@@ -1,7 +1,8 @@
 /*
  * WS2812 RGB panel controlled by ESP8266 module (GPIO2 pin)
  */
- 
+
+#include "webserver.h"
 #include "rgbmatrix.h"
 
 // 8x36 matrix
