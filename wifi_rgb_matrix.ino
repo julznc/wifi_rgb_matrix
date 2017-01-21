@@ -10,6 +10,9 @@ const uint8_t PanelWidth = 36;
 const uint8_t PanelHeight = 8;
 RGBMatrix matrix(PanelWidth, PanelHeight);
 
+unsigned long previousMillis = 0;
+const long interval = 300; 
+
 void setup() {
   Serial.begin(115200);
   while (!Serial); // wait for serial attach
@@ -30,13 +33,23 @@ void setup() {
 int x = 18;//matrix.width();
 
 void loop() {
-  matrix.fillScreen(0);
-  matrix.setCursor(x, 0);
-  matrix.print(F("Julius love Mary Ann"));
-  if(--x < -96) {
-    x = matrix.width();
+
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+
+    matrix.fillScreen(0);
+    matrix.setCursor(x, 0);
+    matrix.print(F("Julius love Mary Ann"));
+    if(--x < -96) {
+      x = matrix.width();
+    }
+    matrix.Show();
+
+    previousMillis = currentMillis;
+
   }
-  matrix.Show();
-  delay(300);
+
+  web::handle();
 
 }

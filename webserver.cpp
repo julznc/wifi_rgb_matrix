@@ -9,6 +9,14 @@ static const char* password = "j03m05c15";
 
 ESP8266WebServer server(80);
 
+void handleRoot() {
+  server.send(200, "text/plain", "WiFi RGB Matrix");
+}
+
+void handleNotFound(){
+  server.send(404, "text/plain", "Not Found");
+}
+
 void begin(void)
 {
   WiFi.begin(ssid, password);
@@ -28,7 +36,18 @@ void begin(void)
   if (MDNS.begin("esp8266")) {
     Serial.println("MDNS responder started");
   }
+
+  server.on("/", handleRoot);
+  server.onNotFound(handleNotFound);
   
+  server.begin();
+  Serial.println("HTTP server started");
+  
+}
+
+void handle(void)
+{
+  server.handleClient();
 }
 
 }

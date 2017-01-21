@@ -10,6 +10,7 @@ namespace web
 {
 
 void begin(void);
+void handle(void);
 
 }
 
