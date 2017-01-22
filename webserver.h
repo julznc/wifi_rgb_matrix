@@ -10,6 +10,7 @@ namespace web
 {
 
 void init(void);
+void setDisplay(void *rgbmatrix);
 void exec(void);
 
 }

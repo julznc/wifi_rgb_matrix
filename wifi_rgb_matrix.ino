@@ -13,19 +13,22 @@ RGBMatrix matrix(PanelWidth, PanelHeight);
 unsigned long previousMillis = 0;
 const long interval = 300; 
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   while (!Serial); // wait for serial attach
   Serial.println("\nInitializing...");
 
   matrix.init();
-  matrix.setText("yusmeann love marius");
+  matrix.setText("yus love meann");
   web::init();
+  web::setDisplay(&matrix);
 
   Serial.println("\nRunning...");
 }
 
-void loop() {
+void loop()
+{
   matrix.exec();
   web::exec();
 }
