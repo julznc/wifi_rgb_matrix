@@ -12,10 +12,22 @@ static RGBMatrix *_display = NULL;
 static char _ready = 0;
 static IPAddress _ip;
 
+static const char *indexhtml = ""
+"<html>"
+"<head>"
+"<title>"
+"WiFi RGB"
+"</title>"
+"</head>"
+"<body>"
+"<h1>WiFi RGB Matrix</h1>"
+"</body>"
+"</html>";
+
 ESP8266WebServer server(80);
 
 void handleRoot() {
-  server.send(200, "text/plain", "WiFi RGB Matrix");
+  server.send(200, "text/html", indexhtml);
 }
 
 void handleNotFound(){
