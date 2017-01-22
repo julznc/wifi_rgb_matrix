@@ -22,7 +22,13 @@ static const char *indexhtml = ""
 "<body>"
 "<h1>WiFi RGB Matrix</h1>"
 "<form action=\"/text\" method=\"post\">"
+"Text:"
 "<input type=\"text\" name=\"text\"></input>"
+"<button type=\"submit\">Set</button>"
+"</form>"
+"<form action=\"/brightness\" method=\"post\">"
+"Brightness:"
+"<input type=\"number\" min=\"0\" max=\"255\" name=\"brightness\"></input>"
 "<button type=\"submit\">Set</button>"
 "</form>"
 "</body>"
@@ -49,6 +55,14 @@ void handleText() {
   handleRoot();
 }
 
+void handleBrightness() {
+  if (!server.hasArg("brightness"))
+    return handleFail("BAD ARGS");
+  //Serial.println(server.arg("brightness"));
+  _display->SetBrightness(server.arg("brightness").toInt());
+  handleRoot();
+}
+
 void handleNotFound(){
   server.send(404, "text/plain", "Not Found");
 }
@@ -62,6 +76,7 @@ void init(void)
 
   server.on("/", handleRoot);
   server.on("/text", handleText);
+  server.on("/brightness", handleBrightness);
   server.onNotFound(handleNotFound);
   
 }

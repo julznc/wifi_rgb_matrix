@@ -12,7 +12,7 @@ void RGBMatrix::init(void)
   memset(_text_buff, 0, sizeof(_text_buff));
 
   Begin();
-  SetBrightness(8); // 0-255
+  SetBrightness(18); // 0-255
   setTextWrap(false);
   setTextColor(0xFFFF);
   Show();
