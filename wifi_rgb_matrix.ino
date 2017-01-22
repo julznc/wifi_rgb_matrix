@@ -20,7 +20,7 @@ void setup()
   Serial.println("\nInitializing...");
 
   matrix.init();
-  matrix.setText("yus love meann");
+  matrix.setText("yus and meann love marius");
   web::init();
   web::setDisplay(&matrix);
 

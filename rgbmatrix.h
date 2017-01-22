@@ -25,8 +25,10 @@ private:
   NeoTopology<RowMajorAlternatingLayout> _topo;
   char _text_buff[256];
   int _x;
+  int _text_width;
   unsigned long _prev_ms;
   const unsigned long _period_ms;
+
 };
 
 #endif

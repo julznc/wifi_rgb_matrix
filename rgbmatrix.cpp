@@ -2,7 +2,7 @@
 
 RGBMatrix::RGBMatrix(uint8_t w, uint8_t h)
   : Adafruit_GFX(w, h), NeoPixelBrightnessBus((uint16_t)(w*h)),
-  _topo(w,h), _x(18), _prev_ms(0), _period_ms(300)
+  _topo(w,h), _x(0), _text_width(0), _prev_ms(0), _period_ms(300)
 {
   
 }
@@ -38,9 +38,13 @@ void RGBMatrix::exec(void)
     fillScreen(0);
     setCursor(_x, 0);
     print(_text_buff);
-    if(--_x < -96) {
-      _x = width();
+    
+    if (_text_width > width()) { // need to scroll
+      if((_text_width - (--_x)) < (width()>>1)) {
+        _x = width();
+      }
     }
+    
     Show();
 
     _prev_ms = curr_ms;
@@ -50,5 +54,19 @@ void RGBMatrix::exec(void)
 void RGBMatrix::setText(const char *text)
 {
   strncpy(_text_buff, text, sizeof(_text_buff)-1);
+  _text_width = strlen(text);
+  if (_text_width > 1) {
+    _text_width *= (5+1);
+  } else {
+    _text_width *= 5;
+  }
+
+  if (_text_width > width()) { // need to scroll
+    Serial.println("need to scroll");
+    _x = width() >> 1;
+  } else { // show at center
+    Serial.println("show at center");
+    _x = (width()-_text_width) >> 1;
+  }
 }
 

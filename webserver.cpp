@@ -49,7 +49,7 @@ void exec(void)
       Serial.println(ssid);
       Serial.print("IP address: ");
       Serial.println(_ip);
-      String ipstr = String(_ip[3]);
+      String ipstr = String(_ip[2]) + "." + String(_ip[3]);
       _display->setText(ipstr.c_str());
       
       if (MDNS.begin("esp8266")) {
