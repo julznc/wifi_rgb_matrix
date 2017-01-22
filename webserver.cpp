@@ -21,6 +21,10 @@ static const char *indexhtml = ""
 "</head>"
 "<body>"
 "<h1>WiFi RGB Matrix</h1>"
+"<form action=\"/text\" method=\"post\">"
+"<input type=\"text\" name=\"text\"></input>"
+"<button type=\"submit\">Set</button>"
+"</form>"
 "</body>"
 "</html>";
 
@@ -28,6 +32,21 @@ ESP8266WebServer server(80);
 
 void handleRoot() {
   server.send(200, "text/html", indexhtml);
+}
+
+void handleFail(String msg)
+{
+  server.sendHeader("Connection", "close");
+  server.sendHeader("Access-Control-Allow-Origin", "*");
+  server.send(500, "text/plain", msg + "\r\n");
+}
+
+void handleText() {
+  if (!server.hasArg("text"))
+    return handleFail("BAD ARGS");
+  //Serial.println(server.arg("text"));
+  _display->setText(server.arg("text"));
+  handleRoot();
 }
 
 void handleNotFound(){
@@ -42,6 +61,7 @@ void init(void)
   _display = NULL;
 
   server.on("/", handleRoot);
+  server.on("/text", handleText);
   server.onNotFound(handleNotFound);
   
 }
@@ -62,7 +82,7 @@ void exec(void)
       Serial.print("IP address: ");
       Serial.println(_ip);
       String ipstr = String(_ip[2]) + "." + String(_ip[3]);
-      _display->setText(ipstr.c_str());
+      _display->setText(ipstr);
       
       if (MDNS.begin("esp8266")) {
         Serial.println("MDNS responder started");

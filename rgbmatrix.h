@@ -20,6 +20,7 @@ public:
 
   void exec(void);
   void setText(const char *text);
+  void setText(const String &text);
 
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;

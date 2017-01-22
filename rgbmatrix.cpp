@@ -62,11 +62,16 @@ void RGBMatrix::setText(const char *text)
   }
 
   if (_text_width > width()) { // need to scroll
-    Serial.println("need to scroll");
+    //Serial.println("need to scroll");
     _x = width() >> 1;
   } else { // show at center
-    Serial.println("show at center");
+    //Serial.println("show at center");
     _x = (width()-_text_width) >> 1;
   }
+}
+
+void RGBMatrix::setText(const String &text)
+{
+  setText(text.c_str());
 }
 
