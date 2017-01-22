@@ -17,7 +17,7 @@ void handleNotFound(){
   server.send(404, "text/plain", "Not Found");
 }
 
-void begin(void)
+void init(void)
 {
   WiFi.begin(ssid, password);
 
@@ -45,7 +45,7 @@ void begin(void)
   
 }
 
-void handle(void)
+void exec(void)
 {
   server.handleClient();
 }

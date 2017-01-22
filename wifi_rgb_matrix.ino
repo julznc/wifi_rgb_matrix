@@ -18,38 +18,14 @@ void setup() {
   while (!Serial); // wait for serial attach
   Serial.println("\nInitializing...");
 
-  matrix.Begin();
-  matrix.SetBrightness(8); // 0-255
-  matrix.setTextWrap(false);
-  matrix.setTextColor(0xFFFF);
-  matrix.Show();
-
-  web::begin();
+  matrix.init();
+  matrix.setText("yusmeann love marius");
+  web::init();
 
   Serial.println("\nRunning...");
-
 }
 
-int x = 18;//matrix.width();
-
 void loop() {
-
-  unsigned long currentMillis = millis();
-
-  if (currentMillis - previousMillis >= interval) {
-
-    matrix.fillScreen(0);
-    matrix.setCursor(x, 0);
-    matrix.print(F("Julius love Mary Ann"));
-    if(--x < -96) {
-      x = matrix.width();
-    }
-    matrix.Show();
-
-    previousMillis = currentMillis;
-
-  }
-
-  web::handle();
-
+  matrix.exec();
+  web::exec();
 }

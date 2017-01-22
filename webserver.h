@@ -9,8 +9,8 @@
 namespace web
 {
 
-void begin(void);
-void handle(void);
+void init(void);
+void exec(void);
 
 }
 

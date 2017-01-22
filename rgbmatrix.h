@@ -13,11 +13,20 @@ class RGBMatrix : public Adafruit_GFX, public NeoPixelBrightnessBus<NeoGrbFeatur
 {
 public:
   RGBMatrix(uint8_t w, uint8_t h);
+  void init(void);
+
   virtual void drawPixel(int16_t x, int16_t y, uint16_t color);
   virtual void fillScreen(uint16_t color);
 
+  void exec(void);
+  void setText(const char *text);
+
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;
+  char _text_buff[256];
+  int _x;
+  unsigned long _prev_ms;
+  const unsigned long _period_ms;
 };
 
 #endif
