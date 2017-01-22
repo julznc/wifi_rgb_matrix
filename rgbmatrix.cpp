@@ -76,3 +76,14 @@ void RGBMatrix::setText(const String &text)
   setText(text.c_str());
 }
 
+void RGBMatrix::setTextHtmlColor(const String &htmlcolor)
+{
+  HtmlColor color;
+  color.Parse<HtmlColorNames>(htmlcolor.c_str());
+  RgbColor rgb( color );
+  uint16_t r = (rgb.R & 0xF8) << 8;
+  uint16_t g = (rgb.G & 0xFC) << 4;
+  uint16_t b = (rgb.B & 0xF8) >> 3;
+  setTextColor(r|g|b);
+}
+

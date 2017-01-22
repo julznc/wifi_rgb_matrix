@@ -22,14 +22,16 @@ static const char *indexhtml = ""
 "<body>"
 "<h1>WiFi RGB Matrix</h1>"
 "<form action=\"/text\" method=\"post\">"
-"Text:"
-"<input type=\"text\" name=\"text\"></input>"
-"<button type=\"submit\">Set</button>"
+"<p>Text:"
+"<input type=\"text\" name=\"text\" required></input><br/>"
+"Color:"
+"<input type=\"color\" name=\"color\" value=\"#ffffff\"></input><br/>"
+"<button type=\"submit\">Set</button></p>"
 "</form>"
 "<form action=\"/brightness\" method=\"post\">"
-"Brightness:"
+"<p>Brightness:"
 "<input type=\"number\" min=\"0\" max=\"255\" name=\"brightness\"></input>"
-"<button type=\"submit\">Set</button>"
+"<button type=\"submit\">Set</button></p>"
 "</form>"
 "</body>"
 "</html>";
@@ -48,10 +50,12 @@ void handleFail(String msg)
 }
 
 void handleText() {
-  if (!server.hasArg("text"))
+  if (!server.hasArg("text") || !server.hasArg("color"))
     return handleFail("BAD ARGS");
   //Serial.println(server.arg("text"));
   _display->setText(server.arg("text"));
+  //Serial.println(server.arg("color"));
+  _display->setTextHtmlColor(server.arg("color"));
   handleRoot();
 }
 

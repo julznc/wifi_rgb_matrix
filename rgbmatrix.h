@@ -21,6 +21,7 @@ public:
   void exec(void);
   void setText(const char *text);
   void setText(const String &text);
+  void setTextHtmlColor(const String &htmlcolor);
 
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;
