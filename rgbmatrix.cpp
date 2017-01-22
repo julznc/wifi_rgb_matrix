@@ -2,7 +2,7 @@
 
 RGBMatrix::RGBMatrix(uint8_t w, uint8_t h)
   : Adafruit_GFX(w, h), NeoPixelBrightnessBus((uint16_t)(w*h)),
-  _topo(w,h), _x(0), _text_width(0), _prev_ms(0), _period_ms(300)
+  _topo(w,h), _x(0), _text_width(0), _prev_ms(0), _period_ms(250)
 {
   
 }
@@ -40,8 +40,9 @@ void RGBMatrix::exec(void)
     print(_text_buff);
     
     if (_text_width > width()) { // need to scroll
-      if((_text_width - (--_x)) < (width()>>1)) {
-        _x = width();
+      if((_text_width + (--_x)) < (width()>>1)) {
+        //Serial.println("reset");
+        _x = width() >> 1;
       }
     }
     

@@ -109,7 +109,7 @@ void exec(void)
       _ready = 1;
       return;
     }
-    delay(300);
+    delay(250);
     return;
   }
 
