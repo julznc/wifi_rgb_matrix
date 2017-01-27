@@ -26,10 +26,12 @@ public:
 
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;
+  NeoPixelAnimator _animations;
 
   enum {
-    TEXT_MODE,
-    BMP_MODE,
+    MODE_TEXT,
+    MODE_BITMAP,
+    MODE_ANIMATE,
   } _mode;
   
   char _text_buff[256];
@@ -38,6 +40,8 @@ private:
   int _text_width;
   unsigned long _prev_ms;
   const unsigned long _period_ms;
+
+  void _setupAnimation();
 
 };
 

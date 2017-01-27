@@ -2,7 +2,9 @@
 
 RGBMatrix::RGBMatrix(uint8_t w, uint8_t h)
   : Adafruit_GFX(w, h), NeoPixelBrightnessBus((uint16_t)(w*h)),
-  _topo(w,h), _mode(TEXT_MODE), _bmp_idx(0), _x(0),_text_width(0),
+  _topo(w,h), _animations((uint16_t)(w*h), NEO_MILLISECONDS),
+  _mode(MODE_TEXT), _bmp_idx(0),
+  _x(0),_text_width(0),
   _prev_ms(0), _period_ms(250)
 {
   
@@ -75,7 +77,7 @@ void RGBMatrix::exec(void)
   {
     switch(_mode)
     {
-    case TEXT_MODE:
+    case MODE_TEXT:
       fillScreen(0);
       setCursor(_x, 0);
       print(_text_buff);
@@ -87,9 +89,16 @@ void RGBMatrix::exec(void)
         }
       }
       break;
-    case BMP_MODE:
-      for (uint16_t index=0; index<PixelsSize(); index++) {
-        SetPixelColor(index, HtmlColor(bmp_arrays[_bmp_idx][index]));
+    case MODE_BITMAP:
+      for (uint16_t pixel=0; pixel<PixelsSize(); pixel++) {
+        SetPixelColor(pixel, HtmlColor(bmp_arrays[_bmp_idx][pixel]));
+      }
+      break;
+    case MODE_ANIMATE:
+      if (_animations.IsAnimating()) {
+        _animations.UpdateAnimations();
+      } else {
+        _setupAnimation();
       }
       break;
     }
@@ -116,7 +125,7 @@ void RGBMatrix::setText(const char *text)
     //Serial.println("show at center");
     _x = (width()-_text_width) >> 1;
   }
-  _mode = TEXT_MODE;
+  _mode = MODE_TEXT;
 }
 
 void RGBMatrix::setText(const String &text)
@@ -138,6 +147,24 @@ void RGBMatrix::setTextHtmlColor(const String &htmlcolor)
 void RGBMatrix::showBitmap(uint8_t index)
 {
   _bmp_idx = index;
-  _mode = BMP_MODE;
+  _mode = MODE_BITMAP;
+}
+
+void RGBMatrix::_setupAnimation()
+{
+  for (uint16_t pixel = 0; pixel < PixelsSize(); pixel++)
+  {
+    const uint8_t peak = 128;
+    RgbColor originalColor = GetPixelColor(pixel);
+    RgbColor targetColor = RgbColor(random(peak), random(peak), random(peak));
+
+    AnimUpdateCallback animUpdate = [=](const AnimationParam& param)
+    {
+      float progress = NeoEase::QuadraticInOut(param.progress);
+      RgbColor updatedColor = RgbColor::LinearBlend(originalColor, targetColor, progress);
+      SetPixelColor(pixel, updatedColor);
+    };
+    _animations.StartAnimation(pixel, random(100, 800), animUpdate);
+  }
 }
 
