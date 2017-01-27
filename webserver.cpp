@@ -32,8 +32,13 @@ static const char *indexhtml = "<html>"
 "</form>"
 "<form action=\"/brightness\" method=\"post\" class=\"formbox\">"
 "<p>Brightness:"
-"<input type=\"number\" min=\"0\" max=\"255\" value=\"8\" name=\"brightness\"required></input>"
+"<input type=\"number\" min=\"0\" max=\"255\" value=\"18\" name=\"brightness\"required></input>"
 "<button type=\"submit\">Set</button></p>"
+"</form>"
+"<form action=\"/bitmap\" method=\"post\" class=\"formbox\"><br/>"
+"<input type=\"radio\" name=\"bitmap\" value=\"0\" onclick=\"this.form.submit();\">\"THANKS\"</input><br/><br/>"
+"<input type=\"radio\" name=\"bitmap\" value=\"1\" onclick=\"this.form.submit();\">\"BABY ON CAR\"</input><br/><br/>"
+"<input type=\"radio\" name=\"bitmap\" value=\"2\" onclick=\"this.form.submit();\">\"STOP\"</input><br/><br/>"
 "</form>"
 "</body>"
 "</html>";
@@ -71,6 +76,14 @@ void handleBrightness() {
   handleRoot();
 }
 
+void handleBitmap() {
+  if (!server.hasArg("bitmap"))
+    return handleFail("BAD ARGS");
+  //Serial.println(server.arg("bitmap"));
+  _display->showBitmap(server.arg("bitmap").toInt());
+  handleRoot();
+}
+
 void handleNotFound(){
   server.send(404, "text/plain", "Not Found");
 }
@@ -85,6 +98,7 @@ void init(void)
   server.on("/", handleRoot);
   server.on("/text", handleText);
   server.on("/brightness", handleBrightness);
+  server.on("/bitmap", handleBitmap);
   server.onNotFound(handleNotFound);
   
 }
