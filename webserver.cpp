@@ -5,12 +5,18 @@
 namespace web
 {
 
-static const char* ssid = "yusmeann_wifi";
-static const char* password = "j03m05c15";
+// connect to a router
+static const char *ssid = "yusmeann_wifi";
+static const char *password = "j03m05c15";
+
+// soft access point (as backup)
+static const char *softAPssid = "rgb-matrix";
+static const char *softAPpassword = "12345678";
 
 static RGBMatrix *_display = NULL;
 static char _ready = 0;
 static IPAddress _ip;
+static IPAddress _soft_ip;
 
 static const char *indexhtml = "<html>"
 "<head>"
@@ -107,6 +113,7 @@ void handleNotFound(){
 
 void init(void)
 {
+  WiFi.softAP(softAPssid, softAPpassword);
   WiFi.begin(ssid, password);
 
   _ready = 0;
@@ -126,6 +133,7 @@ void setDisplay(void *rgbmatrix)
   _display = (RGBMatrix *)rgbmatrix;
 }
 
+static int connect_timeout_count = 10*4; // seconds * (1/250ms)
 void exec(void)
 {
   if (0==_ready) {
@@ -147,7 +155,17 @@ void exec(void)
       Serial.println("HTTP server started");
 
       _ready = 1;
-      return;
+    } else if (--connect_timeout_count < 0) {
+      _soft_ip = WiFi.softAPIP();
+      Serial.print("Soft AP: ");
+      Serial.println(_soft_ip);
+      String softAP_info = String("AP") + String(_soft_ip[2]) + "." + String(_soft_ip[3]);
+      _display->setText(softAP_info);
+
+      server.begin();
+      Serial.println("HTTP server started");
+
+      _ready = 1;
     }
     delay(250);
     return;
