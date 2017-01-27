@@ -59,6 +59,12 @@ void handleFail(String msg)
   server.send(500, "text/plain", msg + "\r\n");
 }
 
+void redirectToRoot(void)
+{
+  server.sendHeader("Location", "/", true);
+  server.send ( 302, "text/plain", "");
+}
+
 void handleText() {
   if (!server.hasArg("text") || !server.hasArg("color"))
     return handleFail("BAD ARGS");
@@ -68,7 +74,7 @@ void handleText() {
   //Serial.println(server.arg("color"));
   if (server.arg("color").length())
     _display->setTextHtmlColor(server.arg("color"));
-  handleRoot();
+  redirectToRoot();
 }
 
 void handleBrightness() {
@@ -76,7 +82,7 @@ void handleBrightness() {
     return handleFail("BAD ARGS");
   //Serial.println(server.arg("brightness"));
   _display->SetBrightness(server.arg("brightness").toInt());
-  handleRoot();
+  redirectToRoot();
 }
 
 void handleBitmap() {
@@ -84,7 +90,7 @@ void handleBitmap() {
     return handleFail("BAD ARGS");
   //Serial.println(server.arg("bitmap"));
   _display->showBitmap(server.arg("bitmap").toInt());
-  handleRoot();
+  redirectToRoot();
 }
 
 void handleAnimate() {
@@ -92,7 +98,7 @@ void handleAnimate() {
     return handleFail("BAD ARGS");
   //Serial.println(server.arg("animate"));
   _display->showAnimation(server.arg("animate").toInt());
-  handleRoot();
+  redirectToRoot();
 }
 
 void handleNotFound(){
