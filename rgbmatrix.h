@@ -23,6 +23,7 @@ public:
   void setText(const String &text);
   void setTextHtmlColor(const String &htmlcolor);
   void showBitmap(uint8_t index);
+  void showAnimation(uint8_t index);
 
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;

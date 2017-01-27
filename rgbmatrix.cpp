@@ -168,3 +168,9 @@ void RGBMatrix::_setupAnimation()
   }
 }
 
+void RGBMatrix::showAnimation(uint8_t index)
+{
+  (void)index; // random animation only for now
+  _mode = MODE_ANIMATE;
+}
+

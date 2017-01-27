@@ -20,25 +20,28 @@ static const char *indexhtml = "<html>"
 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 "</head>"
 "<style media=\"screen\" type=\"text/css\">"
-".formbox{border:2px #CCC solid;padding:0 1em;margin:1em;}"
+".formbox{border:2px #CCC solid;padding:0.5em 1em;margin:0.5em 1em;}"
 ".textbox{width:75%;}"
 "</style>"
 "<body>"
 "<h2>WiFi RGB Matrix</h2>"
 "<form action=\"/text\" method=\"post\" class=\"formbox\">"
-"<p>Text: <input type=\"text\" name=\"text\" maxlength=\"256\" class=\"textbox\"></input><br/>"
+"Text: <input type=\"text\" name=\"text\" maxlength=\"256\" class=\"textbox\"></input><br/>"
 "Color: <input type=\"color\" name=\"color\" value=\"#ffffff\"></input><br/>"
-"<button type=\"submit\">Set</button></p>"
+"<button type=\"submit\">Set</button>"
 "</form>"
 "<form action=\"/brightness\" method=\"post\" class=\"formbox\">"
-"<p>Brightness:"
+"Brightness:"
 "<input type=\"number\" min=\"0\" max=\"255\" value=\"18\" name=\"brightness\"required></input>"
-"<button type=\"submit\">Set</button></p>"
+"<button type=\"submit\">Set</button>"
 "</form>"
-"<form action=\"/bitmap\" method=\"post\" class=\"formbox\"><br/>"
+"<form action=\"/bitmap\" method=\"post\" class=\"formbox\">"
 "<input type=\"radio\" name=\"bitmap\" value=\"0\" onclick=\"this.form.submit();\">\"THANKS\"</input><br/><br/>"
 "<input type=\"radio\" name=\"bitmap\" value=\"1\" onclick=\"this.form.submit();\">\"BABY ON CAR\"</input><br/><br/>"
-"<input type=\"radio\" name=\"bitmap\" value=\"2\" onclick=\"this.form.submit();\">\"STOP\"</input><br/><br/>"
+"<input type=\"radio\" name=\"bitmap\" value=\"2\" onclick=\"this.form.submit();\">\"STOP\"</input><br/>"
+"</form>"
+"<form action=\"/animate\" method=\"post\" class=\"formbox\">"
+"<input type=\"radio\" name=\"animate\" value=\"0\" onclick=\"this.form.submit();\">Random</input><br/>"
 "</form>"
 "</body>"
 "</html>";
@@ -84,6 +87,14 @@ void handleBitmap() {
   handleRoot();
 }
 
+void handleAnimate() {
+  if (!server.hasArg("animate"))
+    return handleFail("BAD ARGS");
+  //Serial.println(server.arg("animate"));
+  _display->showAnimation(server.arg("animate").toInt());
+  handleRoot();
+}
+
 void handleNotFound(){
   server.send(404, "text/plain", "Not Found");
 }
@@ -99,6 +110,7 @@ void init(void)
   server.on("/text", handleText);
   server.on("/brightness", handleBrightness);
   server.on("/bitmap", handleBitmap);
+  server.on("/animate", handleAnimate);
   server.onNotFound(handleNotFound);
   
 }
