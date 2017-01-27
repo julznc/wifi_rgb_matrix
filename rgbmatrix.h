@@ -22,10 +22,18 @@ public:
   void setText(const char *text);
   void setText(const String &text);
   void setTextHtmlColor(const String &htmlcolor);
+  void showBitmap(uint8_t index);
 
 private:
   NeoTopology<RowMajorAlternatingLayout> _topo;
+
+  enum {
+    TEXT_MODE,
+    BMP_MODE,
+  } _mode;
+  
   char _text_buff[256];
+  uint8_t _bmp_idx;
   int _x;
   int _text_width;
   unsigned long _prev_ms;

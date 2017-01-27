@@ -2,7 +2,8 @@
 
 RGBMatrix::RGBMatrix(uint8_t w, uint8_t h)
   : Adafruit_GFX(w, h), NeoPixelBrightnessBus((uint16_t)(w*h)),
-  _topo(w,h), _x(0), _text_width(0), _prev_ms(0), _period_ms(250)
+  _topo(w,h), _mode(TEXT_MODE), _bmp_idx(0), _x(0),_text_width(0),
+  _prev_ms(0), _period_ms(250)
 {
   
 }
@@ -72,22 +73,26 @@ void RGBMatrix::exec(void)
   unsigned long curr_ms = millis();
   if (curr_ms - _prev_ms >= _period_ms)
   {
-#if 0
-    fillScreen(0);
-    setCursor(_x, 0);
-    print(_text_buff);
-    
-    if (_text_width > width()) { // need to scroll
-      if((_text_width + (--_x)) < (width()>>1)) {
-        //Serial.println("reset");
-        _x = width() >> 1;
+    switch(_mode)
+    {
+    case TEXT_MODE:
+      fillScreen(0);
+      setCursor(_x, 0);
+      print(_text_buff);
+      
+      if (_text_width > width()) { // need to scroll
+        if((_text_width + (--_x)) < (width()>>1)) {
+          //Serial.println("reset");
+          _x = width() >> 1;
+        }
       }
+      break;
+    case BMP_MODE:
+      for (uint16_t index=0; index<PixelsSize(); index++) {
+        SetPixelColor(index, HtmlColor(bmp_arrays[_bmp_idx][index]));
+      }
+      break;
     }
-#else
-    for (uint16_t i=0; i<PixelsSize(); i++) {
-      SetPixelColor(i, HtmlColor(bmp_arrays[2][i]));
-    }
-#endif
     Show();
 
     _prev_ms = curr_ms;
@@ -111,6 +116,7 @@ void RGBMatrix::setText(const char *text)
     //Serial.println("show at center");
     _x = (width()-_text_width) >> 1;
   }
+  _mode = TEXT_MODE;
 }
 
 void RGBMatrix::setText(const String &text)
@@ -127,5 +133,11 @@ void RGBMatrix::setTextHtmlColor(const String &htmlcolor)
   uint16_t g = (rgb.G & 0xFC) << 4;
   uint16_t b = (rgb.B & 0xF8) >> 3;
   setTextColor(r|g|b);
+}
+
+void RGBMatrix::showBitmap(uint8_t index)
+{
+  _bmp_idx = index;
+  _mode = BMP_MODE;
 }
 
